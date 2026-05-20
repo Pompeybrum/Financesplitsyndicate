@@ -553,7 +553,8 @@
       <div class="bar-seg" style="width:20%; background:#8B1A2E;">20%</div>
       <div class="bar-seg" style="width:35%; background:#7A6B42;">35%</div>
       <div class="bar-seg" style="width:5%;  background:#C4A95A; font-size:13px;">5%</div>
-      <div class="bar-seg" style="width:15%; background:#5C1520;">15%</div>
+      <div class="bar-seg" style="width:13%; background:#5C1520;">13%</div>
+      <div class="bar-seg" style="width:2%; background:#2A3A2A; font-size:10px;">2%</div>
       <div class="bar-seg" style="width:10%; background:#3A3A38;">10%</div>
       <div class="bar-seg" style="width:15%; background:#1C1C1A; font-size:13px;">15%</div>
     </div>
@@ -562,6 +563,7 @@
       <div class="legend-item"><div class="legend-dot" style="background:#7A6B42;"></div>Prize pool seed</div>
       <div class="legend-item"><div class="legend-dot" style="background:#C4A95A;"></div>Weekly winner</div>
       <div class="legend-item"><div class="legend-dot" style="background:#5C1520;"></div>Marketing</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#2A3A2A;"></div>Subscriptions</div>
       <div class="legend-item"><div class="legend-dot" style="background:#3A3A38;"></div>Legal & ops</div>
       <div class="legend-item"><div class="legend-dot" style="background:#1C1C1A;"></div>Treasury</div>
     </div>
@@ -586,9 +588,14 @@
       <div class="desc">Direct payout to the weekly tournament winner. Creates urgency and loyalty.</div>
     </div>
     <div class="alloc-card" style="border-top: 3px solid #6B1F2A;">
-      <div class="pct" style="color:#B06070;">15%</div>
+      <div class="pct" style="color:#B06070;">13%</div>
       <div class="name">Marketing</div>
       <div class="desc">Paid campaigns, art & design, brand, social and community growth.</div>
+    </div>
+    <div class="alloc-card" style="border-top: 3px solid #2A3A2A;">
+      <div class="pct" style="color:#6A9A6A;">2%</div>
+      <div class="name">Subscriptions</div>
+      <div class="desc">Tools, SaaS, platform fees and recurring software costs.</div>
     </div>
     <div class="alloc-card" style="border-top: 3px solid #444;">
       <div class="pct" style="color:#A0A09A;">10%</div>
@@ -603,11 +610,11 @@
   </div>
   <div class="alloc-card tax" style="margin-bottom: 56px; border-radius: 2px;">
     <div>
-      <div class="pct">25%</div>
+      <div class="pct">10%</div>
       <div class="name" style="color: #5B9BD5; letter-spacing:0.08em; font-size:10px; text-transform:uppercase;">Tax provision</div>
     </div>
     <div class="tax-note">
-      <strong>Held back before any allocation.</strong> Based on US federal corporate rate (21%) plus Delaware state tax, rounded to 25% to be safe. This is ring-fenced — it does not get spent. All percentages above apply to revenue <em>after</em> this provision is removed. Reviewed with your accountant each quarter.
+      <strong>Held back as a provision on estimated profit.</strong> Set at 10% of gross revenue as a conservative proxy — actual liability is on profit only, so this will likely over-provision at early stage. Ring-fenced and not to be spent. Reviewed with your accountant each quarter.
     </div>
   </div>
 
@@ -665,13 +672,20 @@
 
     <!-- POT BREAKDOWN -->
     <div style="margin-bottom:36px;">
-      <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Where every dollar goes</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">Where every dollar goes</div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span id="total-pct-display" style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">Total: 100%</span>
+          <button id="edit-toggle" onclick="toggleEdit()" style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;padding:4px 12px;background:transparent;border:1px solid rgba(168,149,106,0.4);color:var(--gold);border-radius:2px;cursor:pointer;">Edit %</button>
+          <button id="reset-btn" onclick="resetPcts()" style="display:none;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;padding:4px 12px;background:transparent;border:1px solid rgba(255,255,255,0.15);color:var(--muted);border-radius:2px;cursor:pointer;">Reset</button>
+        </div>
+      </div>
       <table class="salary-table" style="width:100%;">
         <thead>
           <tr>
             <th style="width:20px;"></th>
             <th>Pot</th>
-            <th style="text-align:right;">%</th>
+            <th style="text-align:right;width:90px;">%</th>
             <th style="text-align:right;">Weekly</th>
             <th style="text-align:right;">Monthly</th>
             <th style="text-align:right;">Annual</th>
@@ -681,7 +695,10 @@
           <tr>
             <td><div style="width:10px;height:10px;border-radius:2px;background:#5B9BD5;"></div></td>
             <td style="color:rgba(245,240,232,0.55);font-size:13px;">Tax provision <span style="font-size:11px;color:var(--muted);">(off top)</span></td>
-            <td style="text-align:right;font-family:'DM Mono',monospace;font-size:13px;color:#5B9BD5;">25%</td>
+            <td style="text-align:right;">
+              <span class="pct-display" id="d-tax" style="font-family:'DM Mono',monospace;font-size:13px;color:#5B9BD5;">10%</span>
+              <input class="pct-input" id="i-tax" type="number" min="0" max="100" step="1" value="10" style="display:none;width:60px;text-align:right;font-family:'DM Mono',monospace;font-size:13px;background:rgba(91,155,213,0.1);border:1px solid rgba(91,155,213,0.4);color:#5B9BD5;padding:3px 6px;border-radius:2px;">
+            </td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:13px;color:#5B9BD5;" id="p-tax-wk">—</td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(91,155,213,0.55);" id="p-tax-mo">—</td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(91,155,213,0.55);" id="p-tax-yr">—</td>
@@ -689,7 +706,10 @@
           <tr>
             <td><div style="width:10px;height:10px;border-radius:2px;background:#8B1A2E;"></div></td>
             <td style="color:var(--paper);font-size:13px;">Engineering / staff</td>
-            <td style="text-align:right;font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);">20%</td>
+            <td style="text-align:right;">
+              <span class="pct-display" id="d-eng" style="font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);">20%</span>
+              <input class="pct-input" id="i-eng" type="number" min="0" max="100" step="1" value="20" style="display:none;width:60px;text-align:right;font-family:'DM Mono',monospace;font-size:13px;background:rgba(139,26,46,0.15);border:1px solid rgba(139,26,46,0.5);color:#C4707E;padding:3px 6px;border-radius:2px;">
+            </td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:13px;color:#C4707E;" id="p-eng-wk">—</td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(196,112,126,0.55);" id="p-eng-mo">—</td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(196,112,126,0.55);" id="p-eng-yr">—</td>
@@ -697,7 +717,10 @@
           <tr>
             <td><div style="width:10px;height:10px;border-radius:2px;background:#A8956A;"></div></td>
             <td style="color:var(--paper);font-size:13px;">Prize pool seed</td>
-            <td style="text-align:right;font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);">35%</td>
+            <td style="text-align:right;">
+              <span class="pct-display" id="d-prize" style="font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);">35%</span>
+              <input class="pct-input" id="i-prize" type="number" min="0" max="100" step="1" value="35" style="display:none;width:60px;text-align:right;font-family:'DM Mono',monospace;font-size:13px;background:rgba(168,149,106,0.12);border:1px solid rgba(168,149,106,0.4);color:#C4AD7E;padding:3px 6px;border-radius:2px;">
+            </td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:13px;color:#C4AD7E;" id="p-prize-wk">—</td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(196,173,126,0.55);" id="p-prize-mo">—</td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(196,173,126,0.55);" id="p-prize-yr">—</td>
@@ -705,7 +728,10 @@
           <tr>
             <td><div style="width:10px;height:10px;border-radius:2px;background:#C4A95A;"></div></td>
             <td style="color:var(--paper);font-size:13px;">Weekly tournament winner</td>
-            <td style="text-align:right;font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);">5%</td>
+            <td style="text-align:right;">
+              <span class="pct-display" id="d-tourn" style="font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);">5%</span>
+              <input class="pct-input" id="i-tourn" type="number" min="0" max="100" step="1" value="5" style="display:none;width:60px;text-align:right;font-family:'DM Mono',monospace;font-size:13px;background:rgba(196,169,90,0.12);border:1px solid rgba(196,169,90,0.4);color:#D4C07A;padding:3px 6px;border-radius:2px;">
+            </td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:13px;color:#D4C07A;" id="p-tourn-wk">—</td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(212,192,122,0.55);" id="p-tourn-mo">—</td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(212,192,122,0.55);" id="p-tourn-yr">—</td>
@@ -713,15 +739,32 @@
           <tr>
             <td><div style="width:10px;height:10px;border-radius:2px;background:#6B1F2A;"></div></td>
             <td style="color:var(--paper);font-size:13px;">Marketing</td>
-            <td style="text-align:right;font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);">15%</td>
+            <td style="text-align:right;">
+              <span class="pct-display" id="d-art" style="font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);">13%</span>
+              <input class="pct-input" id="i-art" type="number" min="0" max="100" step="1" value="13" style="display:none;width:60px;text-align:right;font-family:'DM Mono',monospace;font-size:13px;background:rgba(107,31,42,0.15);border:1px solid rgba(107,31,42,0.5);color:#B06070;padding:3px 6px;border-radius:2px;">
+            </td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:13px;color:#B06070;" id="p-art-wk">—</td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(176,96,112,0.55);" id="p-art-mo">—</td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(176,96,112,0.55);" id="p-art-yr">—</td>
           </tr>
           <tr>
+            <td><div style="width:10px;height:10px;border-radius:2px;background:#2A3A2A;"></div></td>
+            <td style="color:var(--paper);font-size:13px;">Subscriptions</td>
+            <td style="text-align:right;">
+              <span class="pct-display" id="d-subs" style="font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);">2%</span>
+              <input class="pct-input" id="i-subs" type="number" min="0" max="100" step="1" value="2" style="display:none;width:60px;text-align:right;font-family:'DM Mono',monospace;font-size:13px;background:rgba(42,58,42,0.2);border:1px solid rgba(106,154,106,0.3);color:#6A9A6A;padding:3px 6px;border-radius:2px;">
+            </td>
+            <td style="text-align:right;font-family:'DM Mono',monospace;font-size:13px;color:#6A9A6A;" id="p-subs-wk">—</td>
+            <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(106,154,106,0.55);" id="p-subs-mo">—</td>
+            <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(106,154,106,0.55);" id="p-subs-yr">—</td>
+          </tr>
+          <tr>
             <td><div style="width:10px;height:10px;border-radius:2px;background:#444;"></div></td>
             <td style="color:var(--paper);font-size:13px;">Legal & ops</td>
-            <td style="text-align:right;font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);">10%</td>
+            <td style="text-align:right;">
+              <span class="pct-display" id="d-legal" style="font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);">10%</span>
+              <input class="pct-input" id="i-legal" type="number" min="0" max="100" step="1" value="10" style="display:none;width:60px;text-align:right;font-family:'DM Mono',monospace;font-size:13px;background:rgba(68,68,68,0.3);border:1px solid rgba(160,160,154,0.3);color:#A0A09A;padding:3px 6px;border-radius:2px;">
+            </td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:13px;color:#A0A09A;" id="p-legal-wk">—</td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(160,160,154,0.55);" id="p-legal-mo">—</td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(160,160,154,0.55);" id="p-legal-yr">—</td>
@@ -729,7 +772,10 @@
           <tr>
             <td><div style="width:10px;height:10px;border-radius:2px;background:#222;border:1px solid #444;"></div></td>
             <td style="color:var(--paper);font-size:13px;">Treasury</td>
-            <td style="text-align:right;font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);">15%</td>
+            <td style="text-align:right;">
+              <span class="pct-display" id="d-treas" style="font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);">15%</span>
+              <input class="pct-input" id="i-treas" type="number" min="0" max="100" step="1" value="15" style="display:none;width:60px;text-align:right;font-family:'DM Mono',monospace;font-size:13px;background:rgba(34,34,34,0.5);border:1px solid rgba(128,128,120,0.3);color:#808078;padding:3px 6px;border-radius:2px;">
+            </td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:13px;color:#808078;" id="p-treas-wk">—</td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(128,128,120,0.55);" id="p-treas-mo">—</td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(128,128,120,0.55);" id="p-treas-yr">—</td>
@@ -744,6 +790,9 @@
           </tr>
         </tfoot>
       </table>
+      <div id="pct-warning" style="display:none;margin-top:10px;padding:8px 14px;font-size:12px;background:rgba(186,117,23,0.12);border:1px solid rgba(186,117,23,0.3);color:#D4952A;border-radius:2px;">
+        Percentages don't add up to 100% — figures below are proportional but totals won't match gross revenue until fixed.
+      </div>
     </div>
 
     <!-- SALARY TABLE -->
@@ -779,7 +828,7 @@
         </tr>
         <tr>
           <td>Engineer</td>
-          <td><input type="number" id="s-eng" value="90000" min="0" step="1000"></td>
+          <td><input type="number" id="s-eng" value="0" min="0" step="1000"></td>
           <td class="weekly-cost" id="w-eng">$1,731</td>
         </tr>
         <tr>
@@ -833,26 +882,60 @@
 </div>
 
 <script>
-  const TAX = 0.25;
-  const STAFF = 0.20;
-  const POTS = {
-    eng:   0.20,
-    prize: 0.35,
-    tourn: 0.05,
-    art:   0.15,
-    legal: 0.10,
-    treas: 0.15
-  };
+  const DEFAULTS = { tax:10, eng:20, prize:35, tourn:5, art:13, subs:2, legal:10, treas:15 };
+  let editing = false;
 
   document.getElementById('doc-date').textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
   function fmt(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
 
+  function getPct(key) {
+    return (parseFloat(document.getElementById('i-' + key).value) || 0) / 100;
+  }
+
+  function toggleEdit() {
+    editing = !editing;
+    document.querySelectorAll('.pct-display').forEach(el => el.style.display = editing ? 'none' : 'inline');
+    document.querySelectorAll('.pct-input').forEach(el => el.style.display = editing ? 'inline-block' : 'none');
+    document.getElementById('edit-toggle').textContent = editing ? 'Done' : 'Edit %';
+    document.getElementById('edit-toggle').style.borderColor = editing ? 'rgba(196,112,126,0.5)' : 'rgba(168,149,106,0.4)';
+    document.getElementById('edit-toggle').style.color = editing ? '#C4707E' : 'var(--gold)';
+    document.getElementById('reset-btn').style.display = editing ? 'inline-block' : 'none';
+    update();
+  }
+
+  function resetPcts() {
+    Object.entries(DEFAULTS).forEach(([key, val]) => {
+      document.getElementById('i-' + key).value = val;
+    });
+    update();
+  }
+
   function update() {
     const rev = parseFloat(document.getElementById('rev-slider').value) || 0;
-    const tax = rev * TAX;
+    const taxPct = getPct('tax');
+    const tax = rev * taxPct;
     const after = rev - tax;
-    const staffBudget = after * STAFF;
+    const engPct = getPct('eng');
+    const staffBudget = after * engPct;
+
+    // Update % displays when editing
+    const pots = ['tax','eng','prize','tourn','art','subs','legal','treas'];
+    let potTotal = 0;
+    pots.forEach(key => {
+      const val = parseFloat(document.getElementById('i-' + key).value) || 0;
+      document.getElementById('d-' + key).textContent = val + '%';
+      if (key !== 'tax') potTotal += val;
+    });
+    const taxVal = parseFloat(document.getElementById('i-tax').value) || 0;
+    const grandTotal = taxVal + potTotal;
+
+    // Total indicator
+    const totalDisp = document.getElementById('total-pct-display');
+    const over = grandTotal !== 100;
+    totalDisp.textContent = 'Total: ' + grandTotal + '%';
+    totalDisp.style.color = over ? '#D4952A' : 'var(--muted)';
+    document.getElementById('pct-warning').style.display = over ? 'block' : 'none';
 
     document.getElementById('rev-display').textContent = fmt(rev);
     document.getElementById('rev-annual').textContent = '~' + fmt(rev * 52) + ' / yr';
@@ -866,11 +949,14 @@
     document.getElementById('p-tax-yr').textContent = fmt(tax * 52);
 
     // Pot rows (applied to after-tax)
-    Object.entries(POTS).forEach(([key, pct]) => {
-      const wk = after * pct;
-      document.getElementById('p-' + key + '-wk').textContent = fmt(wk);
-      document.getElementById('p-' + key + '-mo').textContent = fmt(wk * 4.33);
-      document.getElementById('p-' + key + '-yr').textContent = fmt(wk * 52);
+    ['eng','prize','tourn','art','subs','legal','treas'].forEach(key => {
+      const wk = after * getPct(key);
+      const wkEl = document.getElementById('p-' + key + '-wk');
+      const moEl = document.getElementById('p-' + key + '-mo');
+      const yrEl = document.getElementById('p-' + key + '-yr');
+      if (wkEl) wkEl.textContent = fmt(wk);
+      if (moEl) moEl.textContent = fmt(wk * 4.33);
+      if (yrEl) yrEl.textContent = fmt(wk * 52);
     });
 
     // Totals row
@@ -914,7 +1000,7 @@
     document.getElementById('alert-warn').style.display = (pct > 80 && pct <= 100) ? 'block' : 'none';
     document.getElementById('alert-danger').style.display = pct > 100 ? 'block' : 'none';
 
-    const breakeven = totalAnnual / (52 * STAFF * (1 - TAX));
+    const breakeven = engPct > 0 ? totalAnnual / (52 * engPct * (1 - taxPct)) : 0;
     document.getElementById('be-wk').textContent = fmt(breakeven);
     document.getElementById('be-yr').textContent = fmt(breakeven * 52);
   }
@@ -923,6 +1009,7 @@
   ['ceo','coo','cfo','des','eng','mod'].forEach(r => {
     document.getElementById('s-' + r).addEventListener('input', update);
   });
+  document.querySelectorAll('.pct-input').forEach(el => el.addEventListener('input', update));
 
   update();
 </script>

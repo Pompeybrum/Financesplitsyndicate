@@ -556,7 +556,8 @@
       <div class="bar-seg" style="width:13%; background:#5C1520;">13%</div>
       <div class="bar-seg" style="width:2%; background:#2A3A2A; font-size:10px;">2%</div>
       <div class="bar-seg" style="width:10%; background:#3A3A38;">10%</div>
-      <div class="bar-seg" style="width:15%; background:#1C1C1A; font-size:13px;">15%</div>
+      <div class="bar-seg" style="width:14%; background:#1C1C1A; font-size:13px;">14%</div>
+      <div class="bar-seg" style="width:1%; background:#3A2A4A; font-size:9px;"></div>
     </div>
     <div class="bar-legend">
       <div class="legend-item"><div class="legend-dot" style="background:#8B1A2E;"></div>Engineering / staff</div>
@@ -566,6 +567,7 @@
       <div class="legend-item"><div class="legend-dot" style="background:#2A3A2A;"></div>Subscriptions</div>
       <div class="legend-item"><div class="legend-dot" style="background:#3A3A38;"></div>Legal & ops</div>
       <div class="legend-item"><div class="legend-dot" style="background:#1C1C1A;"></div>Treasury</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#3A2A4A;"></div>Events</div>
     </div>
   </div>
 
@@ -603,9 +605,14 @@
       <div class="desc">Delaware compliance, contracts, admin and operational overhead.</div>
     </div>
     <div class="alloc-card" style="border-top: 3px solid #333;">
-      <div class="pct" style="color:#808078;">15%</div>
+      <div class="pct" style="color:#808078;">14%</div>
       <div class="name">Treasury</div>
       <div class="desc">Reserves, runway buffer and strategic reinvestment fund.</div>
+    </div>
+    <div class="alloc-card" style="border-top: 3px solid #3A2A4A;">
+      <div class="pct" style="color:#9A7ABE;">1%</div>
+      <div class="name">Events</div>
+      <div class="desc">Community events, tournaments, IRL activations and sponsored appearances.</div>
     </div>
   </div>
   <div class="alloc-card tax" style="margin-bottom: 56px; border-radius: 2px;">
@@ -770,11 +777,22 @@
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(160,160,154,0.55);" id="p-legal-yr">—</td>
           </tr>
           <tr>
+            <td><div style="width:10px;height:10px;border-radius:2px;background:#3A2A4A;"></div></td>
+            <td style="color:var(--paper);font-size:13px;">Events</td>
+            <td style="text-align:right;">
+              <span class="pct-display" id="d-events" style="font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);">1%</span>
+              <input class="pct-input" id="i-events" type="number" min="0" max="100" step="1" value="1" style="display:none;width:60px;text-align:right;font-family:'DM Mono',monospace;font-size:13px;background:rgba(58,42,74,0.3);border:1px solid rgba(154,122,190,0.3);color:#9A7ABE;padding:3px 6px;border-radius:2px;">
+            </td>
+            <td style="text-align:right;font-family:'DM Mono',monospace;font-size:13px;color:#9A7ABE;" id="p-events-wk">—</td>
+            <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(154,122,190,0.55);" id="p-events-mo">—</td>
+            <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(154,122,190,0.55);" id="p-events-yr">—</td>
+          </tr>
+          <tr>
             <td><div style="width:10px;height:10px;border-radius:2px;background:#222;border:1px solid #444;"></div></td>
             <td style="color:var(--paper);font-size:13px;">Treasury</td>
             <td style="text-align:right;">
-              <span class="pct-display" id="d-treas" style="font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);">15%</span>
-              <input class="pct-input" id="i-treas" type="number" min="0" max="100" step="1" value="15" style="display:none;width:60px;text-align:right;font-family:'DM Mono',monospace;font-size:13px;background:rgba(34,34,34,0.5);border:1px solid rgba(128,128,120,0.3);color:#808078;padding:3px 6px;border-radius:2px;">
+              <span class="pct-display" id="d-treas" style="font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);">14%</span>
+              <input class="pct-input" id="i-treas" type="number" min="0" max="100" step="1" value="14" style="display:none;width:60px;text-align:right;font-family:'DM Mono',monospace;font-size:13px;background:rgba(34,34,34,0.5);border:1px solid rgba(128,128,120,0.3);color:#808078;padding:3px 6px;border-radius:2px;">
             </td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:13px;color:#808078;" id="p-treas-wk">—</td>
             <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(128,128,120,0.55);" id="p-treas-mo">—</td>
@@ -882,7 +900,7 @@
 </div>
 
 <script>
-  const DEFAULTS = { tax:10, eng:20, prize:35, tourn:5, art:13, subs:2, legal:10, treas:15 };
+  const DEFAULTS = { tax:10, eng:20, prize:35, tourn:5, art:13, subs:2, legal:10, treas:14, events:1 };
   let editing = false;
 
   document.getElementById('doc-date').textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -920,7 +938,7 @@
     const staffBudget = after * engPct;
 
     // Update % displays when editing
-    const pots = ['tax','eng','prize','tourn','art','subs','legal','treas'];
+    const pots = ['tax','eng','prize','tourn','art','subs','legal','events','treas'];
     let potTotal = 0;
     pots.forEach(key => {
       const val = parseFloat(document.getElementById('i-' + key).value) || 0;
@@ -949,7 +967,7 @@
     document.getElementById('p-tax-yr').textContent = fmt(tax * 52);
 
     // Pot rows (applied to after-tax)
-    ['eng','prize','tourn','art','subs','legal','treas'].forEach(key => {
+    ['eng','prize','tourn','art','subs','legal','events','treas'].forEach(key => {
       const wk = after * getPct(key);
       const wkEl = document.getElementById('p-' + key + '-wk');
       const moEl = document.getElementById('p-' + key + '-mo');
